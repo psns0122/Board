@@ -25,6 +25,13 @@ public class BoardDTO implements Comparable<BoardDTO> {
         this.bdate = new Date();
     }
 
+    public BoardDTO(String btitle, String bcontent, String bwriter) {
+        this.btitle = btitle;
+        this.bcontent = bcontent;
+        this.bwriter = bwriter;
+        this.bdate = new Date();
+    }
+
     @Override
     public int compareTo(BoardDTO o) {
         return Integer.compare(o.bno, this.bno);
