@@ -1,8 +1,8 @@
-package service;
+package controller;
 
 import dto.BoardDTO;
 
-public interface BoardService {
+public interface BoardInterface {
     void create(BoardDTO item);
     void read(int bno);
     void clear();

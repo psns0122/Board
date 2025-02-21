@@ -42,9 +42,9 @@ public class MAIN {
             if (choice == SelectType.CREAT.getNum()) {
                 menuCreate();
             } else if (choice == SelectType.READ.getNum()) {
-//                service.read();
+                menuRead();
             } else if (choice == SelectType.CLEAR.getNum()) {
-//                service.clear();
+                menuClear();
             } else if (choice == SelectType.EXIT.getNum()) {
                 System.out.println();
                 System.out.println("** 게시판 종료 **");
@@ -52,8 +52,6 @@ public class MAIN {
             } else {
                 throw new CustomException(ErrorCode.INVALID_INPUT);
             }
-
-
         } while (true);
     }
 
@@ -71,16 +69,93 @@ public class MAIN {
         System.out.print("메뉴 선택: ");
         try {
             choice = sc.nextInt();
-            if (choice == SelectType.OK.getNum()) {
-                controller.create(new BoardDTO(title, content, writer));
-            } else if (choice != SelectType.CANCEL.getNum()) {
-                throw new CustomException(ErrorCode.INVALID_INPUT);
-            }
         } catch (InputMismatchException e) {
             throw new CustomException(ErrorCode.INVALID_INPUT);
         }
+
+        if (choice == SelectType.OK.getNum()) {
+            controller.create(new BoardDTO(title, content, writer));
+        } else if (choice != SelectType.CANCEL.getNum()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
     }
-    static void menuRead() {}
-    static void menuClear() {}
+    static void menuRead() {
+        String bnoInput;
+        int bno;
+        int choice;
+
+        System.out.println();
+        System.out.println("[게시물 읽기]");
+        System.out.print("bno: "); bnoInput = sc.next();
+        System.out.println("#############");
+
+        try {
+            bno = Integer.parseInt(bnoInput);
+        } catch (NumberFormatException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
+
+        controller.read(bno);
+
+        System.out.println("----------------------------------------------------------------------------------");
+        System.out.println("보조 메뉴: 1.Update | 2.Delete | 3.List");
+        System.out.print("메뉴 선택: ");
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
+
+        if (choice == SelectType.UPDATE.getNum()) {
+            String title, content, writer;
+
+            System.out.println();
+            System.out.println("[수정 내용 입력]");
+            System.out.print("제목: "); title = sc.next();
+            System.out.print("내용: "); content = sc.next();
+            System.out.print("작성자: "); writer = sc.next();
+            System.out.println("----------------------------------------------------------------------------------");
+            System.out.println("보조 메뉴: 1.Ok | 2.Cancel");
+            System.out.print("메뉴 선택: ");
+            try {
+                choice = sc.nextInt();
+            } catch (InputMismatchException e) {
+                throw new CustomException(ErrorCode.INVALID_INPUT);
+            }
+
+            if (choice == SelectType.OK.getNum()) {
+                controller.update(bno, new BoardDTO(title, content, writer));
+            } else if (choice != SelectType.CANCEL.getNum()) {
+                throw new CustomException(ErrorCode.INVALID_INPUT);
+            }
+        }
+
+        else if (choice == SelectType.DELETE.getNum()) {
+            controller.delete(bno);
+        } else if (choice != SelectType.LIST.getNum()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
+    }
+
+    static void menuClear() {
+        int choice;
+
+        System.out.println();
+        System.out.println("[게시물 전체 삭제]");
+        System.out.println("----------------------------------------------------------------------------------");
+        System.out.println("보조 메뉴: 1.Ok | 2.Cancel");
+        System.out.print("메뉴 선택: ");
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
+
+        if (choice == SelectType.OK.getNum()) {
+            controller.clear();
+        } else if (choice != SelectType.CANCEL.getNum()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
+    }
 
 }
