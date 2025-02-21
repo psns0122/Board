@@ -1,5 +1,6 @@
-package dto;
+package exception;
 
+import enumer.ErrorCode;
 import lombok.Getter;
 
 public class CustomException extends RuntimeException {

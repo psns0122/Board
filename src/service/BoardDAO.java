@@ -1,9 +1,9 @@
 package service;
 
 import dto.BoardDTO;
-import dto.CustomException;
-import dto.ErrorCode;
-import dto.SelectType;
+import exception.CustomException;
+import enumer.ErrorCode;
+import enumer.SelectType;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -15,14 +15,10 @@ public class BoardDAO implements BoardService{
     Scanner sc = new Scanner(System.in);
 
     @Getter
-    private static BoardDAO INSTANCE;
+    private static BoardDAO INSTANCE = new BoardDAO();
     @Getter
     private ArrayList<BoardDTO> boards = new ArrayList<>();
     private int boardSize = 0;
-
-    static {
-        BoardDAO.INSTANCE = new BoardDAO();
-    }
 
     /**
      * 메인 메뉴에서 create를 선택하면 새로운 게시물의 제목, 내용, 작성자를
@@ -46,15 +42,9 @@ public class BoardDAO implements BoardService{
             throw new CustomException(ErrorCode.INVALID_INPUT);
         }
 
-        SelectType select = switch (choice) {
-            case 1 -> SelectType.OK;
-            case 2 -> SelectType.CANCEL;
-            default -> SelectType.ERROR;
-        };
-
-        if (select == SelectType.OK) {
+        if (choice == SelectType.OK.getNum()) {
             this.boards.add(new BoardDTO(++this.boardSize, title, content, writer));
-        } else if (select != SelectType.CANCEL) {
+        } else if (choice != SelectType.CANCEL.getNum()) {
             throw new CustomException(ErrorCode.INVALID_INPUT);
         }
     }
@@ -66,6 +56,7 @@ public class BoardDAO implements BoardService{
     public void read() {
         String bnoInput;
         int bno;
+        int choice;
 
         System.out.println();
         System.out.println("[게시물 읽기]");
@@ -92,19 +83,18 @@ public class BoardDAO implements BoardService{
         System.out.println("----------------------------------------------------------------------------------");
         System.out.println("보조 메뉴: 1.Update | 2.Delete | 3.List");
         System.out.print("메뉴 선택: ");
-        String choice = sc.next();
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
 
-        SelectType select = switch (choice) {
-            case "1" -> SelectType.UPDATE;
-            case "2" -> SelectType.DELETE;
-            case "3" -> SelectType.LIST;
-            default -> SelectType.ERROR;
-        };
-
-        switch (select) {
-            case UPDATE -> this.update(bno);
-            case DELETE -> this.delete(bno);
-            case ERROR -> throw new CustomException(ErrorCode.INVALID_INPUT);
+        if (choice == SelectType.UPDATE.getNum()) {
+            this.update(bno);
+        } else if (choice == SelectType.DELETE.getNum()) {
+            this.delete(bno);
+        } else if (choice != SelectType.LIST.getNum()) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
         }
     }
 
@@ -113,23 +103,23 @@ public class BoardDAO implements BoardService{
      * boards 테이블의 전체 게시물 정보를 삭제한다
      */
     public void clear() {
+        int choice;
+
         System.out.println();
         System.out.println("[게시물 전체 삭제]");
         System.out.println("----------------------------------------------------------------------------------");
         System.out.println("보조 메뉴: 1.Ok | 2.Cancel");
         System.out.print("메뉴 선택: ");
-        String choice = sc.next();
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
 
-        SelectType select = switch (choice) {
-            case "1" -> SelectType.OK;
-            case "2" -> SelectType.CANCEL;
-            default -> SelectType.ERROR;
-        };
-
-        if (select == SelectType.OK) {
+        if (choice == SelectType.OK.getNum()) {
             this.boards.clear();
             this.boardSize = 0;
-        } else if (select != SelectType.CANCEL) {
+        } else if (choice != SelectType.CANCEL.getNum()) {
             throw new CustomException(ErrorCode.INVALID_INPUT);
         }
     }
@@ -140,6 +130,7 @@ public class BoardDAO implements BoardService{
      */
     public void update(int bno) {
         String title, content, writer;
+        int choice;
 
         System.out.println();
         System.out.println("[수정 내용 입력]");
@@ -149,20 +140,18 @@ public class BoardDAO implements BoardService{
         System.out.println("----------------------------------------------------------------------------------");
         System.out.println("보조 메뉴: 1.Ok | 2.Cancel");
         System.out.print("메뉴 선택: ");
-        String choice = sc.next();
+        try {
+            choice = sc.nextInt();
+        } catch (InputMismatchException e) {
+            throw new CustomException(ErrorCode.INVALID_INPUT);
+        }
 
-        SelectType select = switch (choice) {
-            case "1" -> SelectType.OK;
-            case "2" -> SelectType.CANCEL;
-            default -> SelectType.ERROR;
-        };
-
-        if (select == SelectType.OK) {
+        if (choice == SelectType.OK.getNum()) {
             this.boards.get(bno).setBtitle(title);
             this.boards.get(bno).setBcontent(content);
             this.boards.get(bno).setBwriter(writer);
             this.boards.get(bno).setBdate(new Date());
-        } else if (select != SelectType.CANCEL) {
+        } else if (choice != SelectType.CANCEL.getNum()) {
             throw new CustomException(ErrorCode.INVALID_INPUT);
         }
     }

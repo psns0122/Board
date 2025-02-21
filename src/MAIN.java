@@ -1,5 +1,5 @@
 import controller.BoardController;
-import dto.CustomException;
+import exception.CustomException;
 
 public class MAIN {
     public static void main(String[] args) {

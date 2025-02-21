@@ -1,8 +1,8 @@
 package controller;
 
-import dto.CustomException;
-import dto.ErrorCode;
-import dto.SelectType;
+import exception.CustomException;
+import enumer.ErrorCode;
+import enumer.SelectType;
 import service.BoardDAO;
 import service.BoardService;
 
