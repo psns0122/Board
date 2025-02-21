@@ -71,10 +71,11 @@ public class BoardManager {
 
         if (bno <= this.boardSize) {
             System.out.println("번호: " + bno);
-            System.out.println("제목: " + this.boards.get(this.boardSize-bno).getBtitle());
-            System.out.println("내용: " + this.boards.get(this.boardSize-bno).getBcontent());
-            System.out.println("작성자: " + this.boards.get(this.boardSize-bno).getBwriter());
-            System.out.println("날짜: " + this.boards.get(this.boardSize-bno).getBdate());
+            bno = this.boardSize-bno;
+            System.out.println("제목: " + this.boards.get(bno).getBtitle());
+            System.out.println("내용: " + this.boards.get(bno).getBcontent());
+            System.out.println("작성자: " + this.boards.get(bno).getBwriter());
+            System.out.println("날짜: " + this.boards.get(bno).getBdate());
         } else {
             System.out.println("잘못된 입력입니다. 게시물 조회를 종료합니다.\n");
             return;
@@ -86,8 +87,8 @@ public class BoardManager {
         String choice = sc.next();
 
         switch (choice) {
-            case UPDATE -> this.update(this.boardSize-bno);
-            case DELETE -> this.delete(this.boardSize-bno);
+            case UPDATE -> this.update(bno);
+            case DELETE -> this.delete(bno);
             case LIST -> { break; }
             default -> System.out.println("잘못된 입력입니다. 다시 입력해주세요.\n");
         }
