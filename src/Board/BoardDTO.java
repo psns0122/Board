@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Getter
@@ -26,7 +27,16 @@ public class BoardDTO implements Comparable<BoardDTO> {
 
     @Override
     public int compareTo(BoardDTO o) {
-        if (this.bno > o.bno) return -1;
-        else return 0;
+        return Integer.compare(o.bno, this.bno);
+    }
+
+    public String getFormattedBdate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
+        return formatter.format(bdate);
+    }
+
+    public String toFormattedString() {
+        return String.format("%-8d%-12s%-18s%-50s\n",
+                this.bno, this.bwriter, getFormattedBdate(), this.btitle);
     }
 }

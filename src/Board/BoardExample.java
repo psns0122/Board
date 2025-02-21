@@ -43,13 +43,13 @@ public class BoardExample {
             System.out.println();
             System.out.println("[게시물 목록]");
             System.out.println("----------------------------------------------------------------------------------");
-            System.out.println("no\t\twriter\t\t\tdate\t\t\ttitle");
+            System.out.printf("%-8s%-14s%-16s%-50s\n", "no", "writer", "date", "title");
             System.out.println("----------------------------------------------------------------------------------");
 
             Collections.sort(BoardManager.getINSTANCE().getBoards());
             BoardManager.getINSTANCE().getBoards().forEach(
                     (x) -> {
-                        System.out.printf("%d\t\t%s\t\t\t%s\t\t\t%s\n", x.getBno(), x.getBwriter(), x.getBdate(), x.getBtitle());
+                        System.out.println(x.toFormattedString());
                     }
             );
 
