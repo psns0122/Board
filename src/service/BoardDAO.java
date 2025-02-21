@@ -18,6 +18,7 @@ public class BoardDAO implements BoardService{
     private static final BoardDAO INSTANCE = new BoardDAO();
     @Getter
     private ArrayList<BoardDTO> boards = new ArrayList<>();
+    // TODO 여기를 해시맵으로 할 수 있을까?
     private int boardSize = 0;
 
     public void create(BoardDTO item) {
